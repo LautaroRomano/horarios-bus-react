@@ -11,9 +11,9 @@ function App() {
       <Router>
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route path="/exprebus" element={<ExprebusPage />} />
-          <Route path="/tesa" element={<TesaPage />} />
-          <Route path="/recorridos" element={<RecorridosPage />} />
+          <Route exact path="/exprebus" element={<ExprebusPage />} />
+          <Route exact path="/tesa" element={<TesaPage />} />
+          <Route exact path="/recorridos" element={<RecorridosPage />} />
         </Routes>
       </Router>
     </ChakraProvider>
