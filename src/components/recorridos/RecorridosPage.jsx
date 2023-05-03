@@ -1,5 +1,4 @@
 import { Flex, Text, Link, Image } from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
 import exprebusIco from '../images/exprebus-ico.png'
 import tesaIco from '../images/tesa-ico.jpg'
 import LeafletMap from './LeafletMap'

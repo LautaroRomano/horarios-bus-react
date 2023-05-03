@@ -1,3 +1,4 @@
+/* eslint-disable */
 const NULL = null;
 const horarios = {
     exprebus: {

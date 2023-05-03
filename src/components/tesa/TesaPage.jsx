@@ -1,5 +1,5 @@
-import { Flex, Text, TableContainer, Image, Table, Thead, Tr, Th, Td, Tbody, Tfoot, Select, Link } from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
+import { Flex, Text, TableContainer, Image, Table, Thead, Tr, Th, Td, Tbody, Select, Link } from '@chakra-ui/react'
+import { useState } from 'react'
 import { horarios } from '../horarios'
 import exprebusIco from '../images/exprebus-ico.png'
 import tesaIco from '../images/tesa-ico.jpg'
@@ -160,6 +160,7 @@ const Window = ({ options, title, bg }) => {
                 }
               </>
             )
+            return null
         })
       }
     </Flex>

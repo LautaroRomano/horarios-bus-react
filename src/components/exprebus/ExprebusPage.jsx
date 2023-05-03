@@ -1,4 +1,4 @@
-import { Flex, Text, TableContainer, Image, Table, Thead, Tr, Th, Td, Tbody, Tfoot, Select, Link } from '@chakra-ui/react'
+import { Flex, Text, TableContainer, Image, Table, Thead, Tr, Th, Td, Tbody, Select, Link } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import React from 'react'
 import { horarios } from '../horarios'
@@ -181,6 +181,7 @@ const Window = ({ options, title, bg }) => {
                 }
               </>
             )
+            return null
         })
       }
     </Flex>
