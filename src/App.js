@@ -10,8 +10,8 @@ function App() {
     <ChakraProvider>
       <Router>
         <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route exact path="/exprebus" element={<ExprebusPage />} />
+          <Route exact path="/" element={<ExprebusPage />} />
+          <Route exact path="/exprebus" element={<Home />} />
           <Route exact path="/tesa" element={<TesaPage />} />
           <Route exact path="/recorridos" element={<RecorridosPage />} />
         </Routes>
