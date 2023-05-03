@@ -2,10 +2,9 @@ import { Flex, Text, Link, Image } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import exprebusIco from '../images/exprebus-ico.png'
 import tesaIco from '../images/tesa-ico.jpg'
+import LeafletMap from './LeafletMap'
 
-
-
-function Map() {
+function MapView() {
 
     return (
         <Flex flexDir={'column'} w={'100vw'} h={'100vh'} bg={'gray.50'} align={'center'} justify={'center'} position={'relative'} overflow={'hidden'}>
@@ -40,10 +39,11 @@ function Map() {
                     </Flex>
                 </Link>
             </Flex>
-            <Flex position={'relative'} h={'100%'} w={'100vw'} bg={'gray.100'}>
+            <Flex h={'100%'} w={'100vw'} bg={'gray.100'} p={'50px'}>
+                <LeafletMap />
             </Flex>
         </Flex>
     );
 }
 
-export default Map
+export default MapView
