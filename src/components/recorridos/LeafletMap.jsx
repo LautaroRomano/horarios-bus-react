@@ -20,12 +20,12 @@ export default function LeafletMap() {
     L.Marker.prototype.options.icon = DefaultIcon;
     const mapSW = new L.Point(0, 960);
     const mapNE = new L.Point(960, 0);
-    const map = L.map("map", { crs: L.CRS.Simple }).setView([0, 0], 4);
+    const map = L.map("map", { crs: L.CRS.Simple }).setView([0,0], 0);
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       tileSize: 32,
       minZoom: 4,
-      maxZoom: 5,
+      maxZoom: 13,
       noWrap: true
     }).addTo(map);
 
@@ -35,17 +35,14 @@ export default function LeafletMap() {
     );
     map.setMaxBounds(maxBounds);
 
-    var marker = L.marker([0, 0], {
-      draggable: true
-    }).addTo(map);
+;
 
-    marker.bindPopup("<b>Our hero!</b>").openPopup();
 
     function onMapClick(e) {
-      let tileSize = new L.Point(32, 32);
-      let pixelPoint = map.project(e.latlng, map.getMaxZoom()).floor();
-      let coords = pixelPoint.unscaleBy(tileSize).floor();
-      alert("You clicked the map at " + coords);
+      //let tileSize = new L.Point(32, 32);
+      //let pixelPoint = map.project(e.latlng, map.getMaxZoom()).floor();
+      //let coords = pixelPoint.unscaleBy(tileSize).floor();
+      //console.log(map)
     }
     map.on("click", onMapClick);
 
