@@ -1,17 +1,17 @@
 import { Flex, Text, TableContainer, Image, Table, Thead, Tr, Th, Td, Tbody, Select, Link } from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
+import { useState} from 'react'
 import React from 'react'
 import { horarios } from '../horarios'
 import exprebusIco from '../images/exprebus-ico.png'
 import tesaIco from '../images/tesa-ico.jpg'
 
 export default function Home() {
-  const [viewAds, setViewAds] = useState(false)
+  /* const [viewAds, setViewAds] = useState(false)
   useEffect(() => {
     window.adsbygoogle = window.adsbygoogle || [];
     window.adsbygoogle.push({});
     setViewAds(true)
-  }, []);
+  }, []); */
 
   return (
     <Flex flexDir={'column'} w={'100vw'} h={'100vh'} bg={'gray.50'} align={'center'} justify={'center'} position={'relative'} overflow={'hidden'}>
@@ -47,7 +47,7 @@ export default function Home() {
         </Link>
       </Flex>
 
-      {
+      {/* {
         viewAds &&
         <Flex w='100%' height='90' bg='#FFF'>
           <ins
@@ -59,7 +59,7 @@ export default function Home() {
             data-full-width-responsive="true"
           ></ins>
         </Flex>
-      }
+      } */}
 
       <Flex w={'100vw'} h={'100vh'} bg={'gray.50'} align={'center'} justify={'center'} position={'relative'} overflow={'hidden'}>
         <Window options={horarios.exprebus} title={'exprebus'} bg={'orange'} />
