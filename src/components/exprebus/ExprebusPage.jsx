@@ -129,7 +129,29 @@ const Window = ({ options, title, bg }) => {
                           direccion.map(dir => {
                             const cols = horarios[title][tipo][dia][dir].columns
                             const rows = horarios[title][tipo][dia][dir].fields
+                            if(rows){
+                              const now = Date.now();
+                              const currentTime = new Date(now).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
+                              const closestTimes = [];
+                              for (let i = 0; i < rows[0].length; i++) {
+                                  let closestTime = null;
+                                  let smallestDiff = Number.MAX_VALUE;
+                                  for (let j = 0; j < rows.length; j++) {
+                                      const time = rows[j][i];
+                                      if (time !== null) {
+                                          const diff = Math.abs((new Date(`2000-01-01T${time}:00Z`)).getTime() - now);
+                                          if (diff < smallestDiff) {
+                                              smallestDiff = diff;
+                                              closestTime = time;
+                                          }
+                                      }
+                                  }
+                                  closestTimes.push(closestTime);
+                              }
+
+                              console.log(closestTimes); // Muestra los horarios más cercanos en cada columna
+                            }
                             return (
                               <Flex my={'25px'} w={'100%'} minH={'280px'} h={'300px'} position={'relative'}>
                                 <Text bottom={'100px'} right={'-22px'} position={'absolute'} fontWeight={'bold'} fontSize={16} color={'#fff'} textAlign={'center'} textTransform={'uppercase'} transform={'rotate(-90deg)'} w='55px'>{dir}</Text>
@@ -148,15 +170,15 @@ const Window = ({ options, title, bg }) => {
                                     <Tbody>
                                       {
                                         rows.map((row,i) => {
+                                          
                                           return (
                                             <Tr>
                                               {
                                                 row && row.map((field, j) => {
                                                   const antes = rows[i - 1] ? rows[i - 1][j] : false
                                                   const despues = rows[i] ? rows[i][j] : false
-                                                  console.log({antes,despues})
                                                   return (
-                                                  <Td bg={field && despues && antes && isMenor(hora,despues) && isMayor(hora,antes) && '#00CF0D !important'}>{field ? field : '-'}</Td>
+                                                  <Td bg={field && isMenor(hora,despues) && isMayor(hora,antes) && '#00CF0D !important'}>{field ? field : '-'}</Td>
                                                 )})
                                               }
                                             </Tr>
