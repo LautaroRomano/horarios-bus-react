@@ -2,12 +2,32 @@ import React from 'react'
 import { Flex, Text, TableContainer, Table, Thead, Tr, Th, Td, Tbody, Select } from '@chakra-ui/react'
 import { useState } from 'react'
 import { horarios } from './horarios'
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
+
+const scrollStyle = {
+    '&::-webkit-scrollbar': {
+        width: '0',
+        height: '0'
+    },
+    '&::-webkit-scrollbar-track': {
+        background: '#f1f1f1',
+        borderRadius: '5px'
+    },
+    '&::-webkit-scrollbar-thumb': {
+        background: '#888',
+        borderRadius: '5px'
+    },
+    '&::-webkit-scrollbar-thumb:hover': {
+        background: '#555',
+    },
+}
 
 const Window = ({ options, title, bg }) => {
 
     const tipoServicio = Object.keys(options)
-
     const [service, setService] = useState({})
+    const [viewTable, setViewTable] = useState(false)
 
     const handleChange = ({ target }) => {
         const { name, value } = target
@@ -37,11 +57,12 @@ const Window = ({ options, title, bg }) => {
                 bg: bg + '.500',
             }}
             overflowY={'scroll'}
+            css={scrollStyle}
         >
-            <Text fontWeight={'bold'} fontSize={25} color={'#fff'} textAlign={'center'} textTransform={'uppercase'}>{title}</Text>
-            <Select onChange={handleChange} name='servicio' placeholder='Selecciona un servicio' value={service.servicio} >
+            <Text fontWeight={'bold'} fontSize={25} color={'#eee'} textAlign={'center'} textTransform={'uppercase'}>{title}</Text>
+            <Select onChange={handleChange} name='servicio' placeholder='Selecciona un servicio' value={service.servicio} color={'#eee'} _focus={{ color: '#262626' }}>
                 {tipoServicio.map(tipo => (
-                    <option value={tipo} key={tipo}>{tipo}</option>
+                    <option value={tipo} key={tipo}>{tipo.toUpperCase()}</option>
                 ))}
             </Select>
             {
@@ -56,41 +77,94 @@ const Window = ({ options, title, bg }) => {
                                         const direccion = Object.keys(horarios[title][tipo][dia])
                                         return (
                                             <>
-                                                <Flex fontWeight={'bold'} fontSize={20} color={'#fff'} textAlign={'center'} textTransform={'uppercase'}>
-                                                    <Text display={'inline-block'} mx={'3px'}>{tipo}</Text>
-                                                    <Text display={'inline-block'} mx={'3px'}>{dia}</Text>
-                                                </Flex>
                                                 {
                                                     direccion.map(dir => {
                                                         const cols = horarios[title][tipo][dia][dir].columns
                                                         const rows = horarios[title][tipo][dia][dir].fields
-                                                       /*  if (rows) {
-                                                            console.log(rows)
-                                                            const now = Date.now();
-                                                            const closestTimes = [];
-                                                            for (let i = 0; i < rows[0].length; i++) {
-                                                                let closestTime = null;
-                                                                let smallestDiff = Number.MAX_VALUE;
-                                                                for (let j = 0; j < rows.length; j++) {
-                                                                    const time = rows[j][i];
-                                                                    if (time !== null) {
-                                                                        const diff = Math.abs((new Date(`2000-01-01T${time}:00Z`)).getTime() - now);
-                                                                        if (diff < smallestDiff) {
-                                                                            smallestDiff = diff;
-                                                                            closestTime = time;
-                                                                        }
-                                                                    }
-                                                                }
-                                                                closestTimes.push(closestTime);
-                                                            }
+                                                        const viewAll = `${title}-${tipo}-${dia}-${dir}` === viewTable
+                                                        if (viewAll) return (
+                                                            <Flex position={'fixed'} top={0} left={0} w={'100vw'} h={'100vh'} justify={'center'} align={'center'} bg={'#0008'} zIndex={'1000000'}>
+                                                                <Flex my={'25px'} w={['100%', '90%', '85%', '75%']} minH={'280px'} h={'80%'} position={'relative'} bg={bg + '.400'} p={['8px', '10px', '15px', '20px']}>
+                                                                    <Flex flexDir={'column'} w={'100%'}>
+                                                                        <Flex w={'100%'} justify={'end'} px={'15px'} >
+                                                                            <Text
+                                                                                p={'5px'}
+                                                                                _hover={{ opacity: .8 }}
+                                                                                bg={'#eeea'}
+                                                                                color='#262626'
+                                                                                borderRadius={'50%'}
+                                                                                h={'30px'}
+                                                                                w={'30px'}
+                                                                                mb={'5px'}
+                                                                                onClick={() => setViewTable(false)}
+                                                                            >
+                                                                                <FullscreenExitIcon fontSize='small' />
+                                                                            </Text>
+                                                                        </Flex>
+                                                                        <TableContainer w={'99%'} minH={'250px'} bg={'#fff5'} borderRadius={'10px'} overflowY={'scroll'} css={scrollStyle}>
+                                                                            <Table variant='striped' colorScheme='whiteAlpha' size={'sm'}>
+                                                                                <Thead position={'sticky'} top={0} bg={'#fff8'}>
+                                                                                    <Tr>
+                                                                                        {
+                                                                                            cols.map(col => (
+                                                                                                <Th>{col}</Th>
+                                                                                            ))
+                                                                                        }
+                                                                                    </Tr>
+                                                                                </Thead>
+                                                                                <Tbody>
+                                                                                    {
+                                                                                        rows.map((row, i) => {
+                                                                                            return (
+                                                                                                <Tr>
+                                                                                                    {
+                                                                                                        row && row.map((field, j) => {
+                                                                                                            const antes = rows[i - 1] ? rows[i - 1][j] : false
+                                                                                                            const despues = rows[i] ? rows[i][j] : false
+                                                                                                            return (
+                                                                                                                <Td bg={field && isMenor(hora, despues) && isMayor(hora, antes) && '#00CF0D !important'}>{field ? field : '-'}</Td>
+                                                                                                            )
+                                                                                                        })
+                                                                                                    }
+                                                                                                </Tr>
+                                                                                            )
+                                                                                        })
+                                                                                    }
+                                                                                </Tbody>
+                                                                            </Table>
+                                                                        </TableContainer>
+                                                                        <Flex align={'center'}>
+                                                                            <Flex h={'15px'} w={'15px'} bg={'#00CF0D'} borderRadius={'15%'}></Flex>
+                                                                            <Text ms={'10px'} color={'#FFF'}>Siguiente</Text>
+                                                                            <Text ms={'10px'} fontWeight={'bold'} fontSize={12} color={'#eee'} textAlign={'center'} textTransform={'uppercase'} w='100px'>{tipo}</Text>
+                                                                            <Text fontWeight={'bold'} fontSize={12} color={'#eee'} textAlign={'center'} textTransform={'uppercase'} w='100px'>{dia}</Text>
+                                                                            <Text fontWeight={'bold'} fontSize={13} color={'#eee'} textAlign={'center'} textTransform={'uppercase'} w='55px'>{dir}</Text>
+                                                                        </Flex>
+                                                                    </Flex>
+                                                                </Flex>
+                                                            </Flex>
+                                                        )
 
-                                                            console.log(closestTimes); // Muestra los horarios más cercanos en cada columna
-                                                        } */
                                                         return (
                                                             <Flex my={'25px'} w={'100%'} minH={'280px'} h={'300px'} position={'relative'}>
-                                                                <Text bottom={'100px'} right={'-22px'} position={'absolute'} fontWeight={'bold'} fontSize={16} color={'#fff'} textAlign={'center'} textTransform={'uppercase'} transform={'rotate(-90deg)'} w='55px'>{dir}</Text>
-                                                                <Flex flexDir={'column'} w={'95%'}>
-                                                                    <TableContainer me={'25px'} w={'99%'} minH={'250px'} bg={'#fff5'} borderRadius={'10px'} overflowY={'scroll'}>
+                                                                <Flex flexDir={'column'} w={'100%'}>
+                                                                    <Flex w={'100%'} justify={'space-between'} align={'end'} px={'10px'} >
+                                                                        <Text ms={'10px'} fontWeight={'bold'} fontSize={12} color={'#eee'} textAlign={'center'} textTransform={'uppercase'} w='100px'>{tipo}</Text>
+                                                                        <Text fontWeight={'bold'} fontSize={12} color={'#eee'} textAlign={'center'} textTransform={'uppercase'} w='135px'>{dia}</Text>
+                                                                        <Text
+                                                                            p={'5px'}
+                                                                            _hover={{ opacity: .8 }}
+                                                                            bg={'#eeea'}
+                                                                            color='#262626'
+                                                                            borderRadius={'50px 50px 0 0'}
+                                                                            h={'30px'}
+                                                                            w={'30px'}
+                                                                            onClick={() => setViewTable(`${title}-${tipo}-${dia}-${dir}`)}
+                                                                        >
+                                                                            <FullscreenIcon fontSize='small' />
+                                                                        </Text>
+                                                                    </Flex>
+                                                                    <TableContainer w={'99%'} minH={'250px'} bg={'#fff5'} borderRadius={'10px'} overflowY={'scroll'} css={scrollStyle}>
                                                                         <Table variant='striped' colorScheme='whiteAlpha' size={'sm'}>
                                                                             <Thead position={'sticky'} top={0} bg={'#fff8'}>
                                                                                 <Tr>
@@ -104,7 +178,6 @@ const Window = ({ options, title, bg }) => {
                                                                             <Tbody>
                                                                                 {
                                                                                     rows.map((row, i) => {
-
                                                                                         return (
                                                                                             <Tr>
                                                                                                 {
@@ -126,6 +199,7 @@ const Window = ({ options, title, bg }) => {
                                                                     <Flex align={'center'}>
                                                                         <Flex h={'15px'} w={'15px'} bg={'#00CF0D'} borderRadius={'15%'}></Flex>
                                                                         <Text ms={'10px'} color={'#FFF'}>Siguiente</Text>
+                                                                        <Text ms={'10px'} fontWeight={'bold'} fontSize={14} color={'#eee'} textAlign={'center'} textTransform={'uppercase'} w='120px'>{'hacia el ' + dir}</Text>
                                                                     </Flex>
                                                                 </Flex>
                                                             </Flex>
