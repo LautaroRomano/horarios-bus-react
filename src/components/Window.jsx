@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { horarios } from './horarios'
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
+import Ads from './Ads';
 
 const scrollStyle = {
     '&::-webkit-scrollbar': {
@@ -78,7 +79,7 @@ const Window = ({ options, title, bg }) => {
                                         return (
                                             <>
                                                 {
-                                                    direccion.map(dir => {
+                                                    direccion.map((dir, index) => {
                                                         const cols = horarios[title][tipo][dia][dir].columns
                                                         const rows = horarios[title][tipo][dia][dir].fields
                                                         const viewAll = `${title}-${tipo}-${dia}-${dir}` === viewTable
@@ -146,63 +147,69 @@ const Window = ({ options, title, bg }) => {
                                                         )
 
                                                         return (
-                                                            <Flex my={'25px'} w={'100%'} minH={'280px'} h={'300px'} position={'relative'}>
-                                                                <Flex flexDir={'column'} w={'100%'}>
-                                                                    <Flex w={'100%'} justify={'space-between'} align={'end'} px={'10px'} >
-                                                                        <Text ms={'10px'} fontWeight={'bold'} fontSize={12} color={'#eee'} textAlign={'center'} textTransform={'uppercase'} w='100px'>{tipo}</Text>
-                                                                        <Text fontWeight={'bold'} fontSize={12} color={'#eee'} textAlign={'center'} textTransform={'uppercase'} w='135px'>{dia}</Text>
-                                                                        <Text
-                                                                            p={'5px'}
-                                                                            _hover={{ opacity: .8 }}
-                                                                            bg={'#eeea'}
-                                                                            color='#262626'
-                                                                            borderRadius={'50px 50px 0 0'}
-                                                                            h={'30px'}
-                                                                            w={'30px'}
-                                                                            onClick={() => setViewTable(`${title}-${tipo}-${dia}-${dir}`)}
-                                                                        >
-                                                                            <FullscreenIcon fontSize='small' />
-                                                                        </Text>
-                                                                    </Flex>
-                                                                    <TableContainer w={'99%'} minH={'250px'} bg={'#fff5'} borderRadius={'10px'} overflowY={'scroll'} css={scrollStyle}>
-                                                                        <Table variant='striped' colorScheme='whiteAlpha' size={'sm'}>
-                                                                            <Thead position={'sticky'} top={0} bg={'#fff8'}>
-                                                                                <Tr>
+                                                            <>
+                                                                <Flex my={'25px'} w={'100%'} minH={'280px'} h={'300px'} position={'relative'}>
+                                                                    <Flex flexDir={'column'} w={'100%'}>
+                                                                        <Flex w={'100%'} justify={'space-between'} align={'end'} px={'10px'} >
+                                                                            <Text ms={'10px'} fontWeight={'bold'} fontSize={12} color={'#eee'} textAlign={'center'} textTransform={'uppercase'} w='100px'>{tipo}</Text>
+                                                                            <Text fontWeight={'bold'} fontSize={12} color={'#eee'} textAlign={'center'} textTransform={'uppercase'} w='135px'>{dia}</Text>
+                                                                            <Text
+                                                                                p={'5px'}
+                                                                                _hover={{ opacity: .8 }}
+                                                                                bg={'#eeea'}
+                                                                                color='#262626'
+                                                                                borderRadius={'50px 50px 0 0'}
+                                                                                h={'30px'}
+                                                                                w={'30px'}
+                                                                                onClick={() => setViewTable(`${title}-${tipo}-${dia}-${dir}`)}
+                                                                            >
+                                                                                <FullscreenIcon fontSize='small' />
+                                                                            </Text>
+                                                                        </Flex>
+                                                                        <TableContainer w={'99%'} minH={'250px'} bg={'#fff5'} borderRadius={'10px'} overflowY={'scroll'} css={scrollStyle}>
+                                                                            <Table variant='striped' colorScheme='whiteAlpha' size={'sm'}>
+                                                                                <Thead position={'sticky'} top={0} bg={'#fff8'}>
+                                                                                    <Tr>
+                                                                                        {
+                                                                                            cols.map(col => (
+                                                                                                <Th>{col}</Th>
+                                                                                            ))
+                                                                                        }
+                                                                                    </Tr>
+                                                                                </Thead>
+                                                                                <Tbody>
                                                                                     {
-                                                                                        cols.map(col => (
-                                                                                            <Th>{col}</Th>
-                                                                                        ))
+                                                                                        rows.map((row, i) => {
+                                                                                            return (
+                                                                                                <Tr>
+                                                                                                    {
+                                                                                                        row && row.map((field, j) => {
+                                                                                                            const antes = rows[i - 1] ? rows[i - 1][j] : false
+                                                                                                            const despues = rows[i] ? rows[i][j] : false
+                                                                                                            return (
+                                                                                                                <Td bg={field && isMenor(hora, despues) && isMayor(hora, antes) && '#00CF0D !important'}>{field ? field : '-'}</Td>
+                                                                                                            )
+                                                                                                        })
+                                                                                                    }
+                                                                                                </Tr>
+                                                                                            )
+                                                                                        })
                                                                                     }
-                                                                                </Tr>
-                                                                            </Thead>
-                                                                            <Tbody>
-                                                                                {
-                                                                                    rows.map((row, i) => {
-                                                                                        return (
-                                                                                            <Tr>
-                                                                                                {
-                                                                                                    row && row.map((field, j) => {
-                                                                                                        const antes = rows[i - 1] ? rows[i - 1][j] : false
-                                                                                                        const despues = rows[i] ? rows[i][j] : false
-                                                                                                        return (
-                                                                                                            <Td bg={field && isMenor(hora, despues) && isMayor(hora, antes) && '#00CF0D !important'}>{field ? field : '-'}</Td>
-                                                                                                        )
-                                                                                                    })
-                                                                                                }
-                                                                                            </Tr>
-                                                                                        )
-                                                                                    })
-                                                                                }
-                                                                            </Tbody>
-                                                                        </Table>
-                                                                    </TableContainer>
-                                                                    <Flex align={'center'}>
-                                                                        <Flex h={'15px'} w={'15px'} bg={'#00CF0D'} borderRadius={'15%'}></Flex>
-                                                                        <Text ms={'10px'} color={'#FFF'}>Siguiente</Text>
-                                                                        <Text ms={'10px'} fontWeight={'bold'} fontSize={14} color={'#eee'} textAlign={'center'} textTransform={'uppercase'} w='120px'>{'hacia el ' + dir}</Text>
+                                                                                </Tbody>
+                                                                            </Table>
+                                                                        </TableContainer>
+                                                                        <Flex align={'center'}>
+                                                                            <Flex h={'15px'} w={'15px'} bg={'#00CF0D'} borderRadius={'15%'}></Flex>
+                                                                            <Text ms={'10px'} color={'#FFF'}>Siguiente</Text>
+                                                                            <Text ms={'10px'} fontWeight={'bold'} fontSize={14} color={'#eee'} textAlign={'center'} textTransform={'uppercase'} w='120px'>{'hacia el ' + dir}</Text>
+                                                                        </Flex>
                                                                     </Flex>
                                                                 </Flex>
-                                                            </Flex>
+                                                                {
+                                                                    (index) % 2 === 0 &&
+                                                                    < Ads />
+                                                                }
+                                                            </>
                                                         )
                                                     })
                                                 }
