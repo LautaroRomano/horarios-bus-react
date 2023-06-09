@@ -205,14 +205,11 @@ const Window = ({ options, title, bg }) => {
                                                                         </Flex>
                                                                     </Flex>
                                                                 </Flex>
-                                                                {
-                                                                    (index) % 2 === 0 &&
-                                                                    < Ads />
-                                                                }
                                                             </>
                                                         )
                                                     })
                                                 }
+                                                < Ads />
                                             </>
                                         )
                                     })
