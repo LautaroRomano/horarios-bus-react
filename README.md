@@ -11,10 +11,10 @@ Esta es una aplicación desarrollada en React que te permite ver los horarios de
 
 ## Capturas de pantalla
 
-![Captura de pantalla 1]([/screenshots/screenshot1.png](https://github.com/LautaroRomano/horarios-bus-react/blob/master/public/screenshots/exprebus.png))
+![Captura de pantalla 1](https://github.com/LautaroRomano/horarios-bus-react/blob/master/public/screenshots/exprebus.png)
 > Ejemplo de vista de horarios de una línea de colectivo.
 
-![Captura de pantalla 2]([/screenshots/screenshot2.png](https://github.com/LautaroRomano/horarios-bus-react/blob/master/public/screenshots/tesa.png))
+![Captura de pantalla 2](https://github.com/LautaroRomano/horarios-bus-react/blob/master/public/screenshots/tesa.png)
 > Ejemplo de resultado de búsqueda de líneas de colectivo.
 
 ## Instalación
